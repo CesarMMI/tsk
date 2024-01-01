@@ -5,5 +5,5 @@ export class CreateTaskDto {
 	title: string;
 	description?: string;
 	deadline?: Date;
-	tagsIds?: string[];
+	tagId?: string;
 }

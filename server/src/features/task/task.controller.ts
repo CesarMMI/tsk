@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -21,8 +22,8 @@ export class TaskController {
 	}
 
 	@Get()
-	findAll() {
-		return this.taskService.findAll();
+	findAll(@Query() query?: {tagId?: string}) {
+		return this.taskService.findAll(query.tagId);
 	}
 
 	@Get(':id')

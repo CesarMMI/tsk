@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { Tag } from 'src/database/entities/tag.entity';
 import { ServerError } from 'src/shared/classes/server-error.class';
 import { Repository } from 'typeorm';
+import { Task } from '../../database/entities/task.entity';
+import { TagService } from '../tag/tag.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { Task } from '../../database/entities/task.entity';
-import { Tag } from 'src/database/entities/tag.entity';
-import { TagService } from '../tag/tag.service';
 
 @Injectable()
 export class TaskService {
@@ -15,34 +15,23 @@ export class TaskService {
 		private tagService: TagService
 	) {}
 
-	private async _getTags(tagsIds: string[]) {
-		if (!tagsIds) return;
-
-		const tags: Tag[] = [];
-		if (tagsIds)
-			for (const tagId of tagsIds) {
-				const tag = await this.tagService.findOne(tagId);
-				tags.push(tag);
-			}
-		return tags;
-	}
-
 	async create(dto: CreateTaskDto) {
-		const tags = await this._getTags(dto.tagsIds);
-		
+		let tag = undefined;
+		if (dto.tagId) tag = await this.tagService.findOne(dto.tagId);
+
 		const task = await this.taskRepository.save({
 			title: dto.title,
 			description: dto.description,
 			deadline: dto.deadline,
-			tags: tags?.length > 0 ? tags : undefined,
+			tag,
 		});
 
 		if (!task) throw new ServerError(500, 'internal server error');
 		else return task;
 	}
 
-	async findAll() {
-		return await this.taskRepository.find();
+	async findAll(tagId?: string) {
+		return await this.taskRepository.find({ where: { tag: { id: tagId } } });
 	}
 
 	async findOne(id: string) {
@@ -54,20 +43,21 @@ export class TaskService {
 
 	async update(id: string, dto: UpdateTaskDto) {
 		const task = await this.findOne(id);
-		const tags = await this._getTags(dto.tagsIds);
+		let tag: Tag = null;
+		if (dto.tagId) tag = await this.tagService.findOne(dto.tagId);
 
 		let doneAt: Date = undefined;
-		if(dto.done) doneAt = new Date();
+		if (dto.done) doneAt = new Date();
+		delete dto.tagId;
 
 		const result = await this.taskRepository.update(
 			{ id: task.id },
 			{
-				title: dto.title,
-				done: dto.done,
-				doneAt, 
-				description: dto.description,
-				deadline: dto.deadline,
-				tags: tags?.length > 0 ? tags : undefined,
+				...task,
+				...dto,
+				id,
+				doneAt,
+				tag,
 			}
 		);
 
