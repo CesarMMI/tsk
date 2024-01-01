@@ -1,0 +1,16 @@
+<tsk-header [title]="(tag$ | async)?.name ?? 'Undefined Tag'">
+  <mat-chip-listbox end [formControl]="filterControl">
+    <mat-chip-option color="accent" value="all" selected>All</mat-chip-option>
+    <mat-chip-option color="accent" value="todo">Todo</mat-chip-option>
+    <mat-chip-option color="accent" value="done">Done</mat-chip-option>
+  </mat-chip-listbox>
+</tsk-header>
+
+@if(tasks$ | async; as tasks){
+<tsk-task-list
+  [tasks]="tasks"
+  (checkClick)="onCheck($event)"
+  (addClick)="navigateTask()"
+  (taskClick)="navigateTask($event)"
+/>
+}

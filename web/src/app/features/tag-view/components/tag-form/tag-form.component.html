@@ -1,0 +1,30 @@
+<form [formGroup]="form" (ngSubmit)="submitEvent.emit(form.value)">
+  <mat-form-field appearance="outline" color="accent">
+    <mat-label>Title</mat-label>
+    <input matInput formControlName="title" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" color="accent">
+    <mat-label>Description</mat-label>
+    <textarea matInput formControlName="description" rows="2"></textarea>
+  </mat-form-field>
+
+  <div class="actions">
+    <button
+      mat-stroked-button
+      type="button"
+      color="accent"
+      (click)="cancelEvent.emit()"
+    >
+      Cancel
+    </button>
+    <button
+      mat-flat-button
+      type="submit"
+      color="accent"
+      [disabled]="form.invalid"
+    >
+      Save
+    </button>
+  </div>
+</form>

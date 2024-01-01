@@ -1,0 +1,11 @@
+@if (task$ | async; as task) {
+<tsk-header [title]="(task.id ? 'Edit' : 'Add') + ' task'"></tsk-header>
+
+<div class="card">
+  <tsk-tag-form
+    [tag]="task"
+    (cancelEvent)="router.navigate(['..'])"
+    (submitEvent)="onSubmit($event)"
+  />
+</div>
+}

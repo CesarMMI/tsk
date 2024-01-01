@@ -1,0 +1,36 @@
+<div class="list">
+  <!-- Tasks -->
+  @for (task of tasks; track task.id; let i = $index) {
+  <div [ngClass]="{'item':true, 'divider-bottom': true, 'done': task.done}">
+    <tsk-checkbox
+      [(value)]="task.done"
+      (valueChange)="onCheckClick(task)"
+    ></tsk-checkbox>
+
+    <span class="item__title" (click)="taskClick.emit(task)">{{
+      task.title
+    }}</span>
+
+    <span class="item__description">{{ task.description }}</span>
+
+    <span class="item-spacer"></span>
+
+    @if (task.tag) {
+    <span
+      class="item__tag"
+      [ngStyle]="{ backgroundColor: task.tag.color }"
+      >{{ task.tag.name }}</span
+    >
+    } @if (task.deadline) {
+    <span class="item__deadline">{{ task.deadline | date }}</span>
+    }
+  </div>
+  }
+  <!-- Add Button -->
+  @if (showAdd) {
+  <div class="item divider-bottom add" (click)="addClick.emit()">
+    <mat-icon>add</mat-icon>
+    <span class="item__title add">Add Task</span>
+  </div>
+  }
+</div>

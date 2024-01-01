@@ -1,0 +1,10 @@
+<div
+  [ngClass]="{
+    'checkbox': true,
+    'active': value,
+    'disabled': disabled
+  }"
+  (click)="onClick()"
+>
+  <mat-icon>check</mat-icon>
+</div>

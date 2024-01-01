@@ -1,0 +1,59 @@
+:host {
+  display: block;
+}
+
+.item {
+  &.add {
+    color: var(--color-text-dk);
+    transition: color 0.2s ease-in-out;
+
+    &:hover {
+      color: var(--color-text-md);
+    }
+  }
+
+  &.done {
+    color: var(--color-text-dk);
+
+    .item {
+      &__title {
+        cursor: pointer;
+        font-weight: 500;
+        text-decoration: line-through;
+      }
+    }
+  }
+
+  &__title {
+    cursor: pointer;
+    font-weight: 500;
+
+    &.add {
+      font-weight: 400;
+    }
+  }
+
+  &__description {
+    color: var(--color-text-dk);
+  }
+
+  &__deadline,
+  &__tag {
+    height: 24px;
+
+    display: flex;
+    align-items: center;
+
+    font-size: var(--text-sm);
+    padding: 0 var(--padding-xs);
+    border-radius: var(--padding-xs);
+
+    color: var(--color-text-dk);
+    background-color: var(--color-base-lt);
+  }
+
+  &__tag {
+    font-weight: 500;
+    color: var(--color-base-dk);
+  }
+}
