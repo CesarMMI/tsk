@@ -4,6 +4,7 @@ import {
 	Entity,
 	JoinTable,
 	ManyToMany,
+	ManyToOne,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from 'typeorm';
@@ -18,16 +19,16 @@ export class Task {
 	title: string;
 
 	@Column({ nullable: true, type: 'text' })
-	description: string;
+	description?: string;
 
 	@Column({ default: false })
 	done: boolean;
 
 	@Column({ name: 'done_at', nullable: true })
-	doneAt: Date;
+	doneAt?: Date;
 
 	@Column({ nullable: true })
-	deadline: Date;
+	deadline?: Date;
 
 	@CreateDateColumn({ name: 'created_at' })
 	createdAt: Date;
@@ -35,9 +36,6 @@ export class Task {
 	@UpdateDateColumn({ name: 'updated_at' })
 	updatedAt: Date;
 
-	@ManyToMany(() => Tag, (tag) => tag.tasks, {
-		eager: true,
-	})
-	@JoinTable()
-	tags: Tag[];
+	@ManyToOne(() => Tag, (tag) => tag.tasks, { nullable: true, eager: true })
+	tag?: Tag;
 }

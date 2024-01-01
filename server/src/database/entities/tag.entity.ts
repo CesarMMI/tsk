@@ -1,10 +1,10 @@
 import {
-    Column,
-    CreateDateColumn,
-    Entity,
-    ManyToMany,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
+	Column,
+	CreateDateColumn,
+	Entity,
+	OneToMany,
+	PrimaryGeneratedColumn,
+	UpdateDateColumn,
 } from 'typeorm';
 import { Task } from './task.entity';
 
@@ -25,6 +25,6 @@ export class Tag {
 	@UpdateDateColumn({ name: 'updated_at' })
 	updatedAt: Date;
 
-	@ManyToMany(() => Task, (task) => task.tags)
-    tasks: Task[]
+	@OneToMany(() => Task, (task) => task.tag)
+	tasks: Task[];
 }
