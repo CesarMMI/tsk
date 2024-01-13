@@ -1,26 +1,13 @@
 .list {
-  display: grid;
+	display: grid;
 }
 
-.item {
-  height: 24px;
+.list-item {
+	height: 24px;
+	display: flex;
+	align-items: center;
 
-  display: flex;
-  align-items: center;
-
-  gap: var(--padding-md);
-  padding: var(--padding-md);
-
-  color: var(--color-text-lt);
-
-  &.divider-bottom {
-    &:not(&:last-child) {
-      height: 23px;
-      border-bottom: 1px solid var(--color-base-lt);
-    }
-  }
-
-  .item-spacer {
-    flex: 1 1 auto;
-  }
+	gap: var(--padding-md);
+	padding: var(--padding-md);
+	color: var(--color-text-lt);
 }

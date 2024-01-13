@@ -1,57 +1,106 @@
-import { Injectable } from '@angular/core';
-import { catchError, first, map, of } from 'rxjs';
+import { Injectable, computed } from '@angular/core';
+import { Observable, catchError, first, map, of, switchMap } from 'rxjs';
 import { StateManager } from '../../../core/classes/state-manager';
-import { WriteTaskRequest } from '../../types/api/write-task.request';
+import { StateManagerData } from '../../../core/types/state-manager-data';
 import { Task } from '../../types/models/task';
 import { TaskService } from '../services/task.service';
-import { TagState } from './tag.state';
+import { WriteTask } from '../../types/api/write-task';
 
 @Injectable({
-  providedIn: 'root',
+	providedIn: 'root',
 })
-export class TaskState extends StateManager<Task[]> {
-  constructor(private _tagState: TagState, private _taskService: TaskService) {
-    super();
-  }
+export class TasksState extends StateManager<Task[]> {
+	// Readables
+	readonly loaded = computed(() => this.state().loaded);
+	readonly error = computed(() => this.state().error);
+	readonly tasks = computed(() =>
+		this.state().value.sort((a, b) => {
+			// Done
+			if (a.done && !b.done) return 1;
+			if (!a.done && b.done) return -1;
+			// Deadline
+			if (a.deadline && !b.deadline) return -1;
+			if (!a.deadline && b.deadline) return 1;
+			if (a.deadline && b.deadline)
+				return a.deadline.getTime() - b.deadline.getTime();
+			// Created At
+			return b.createdAt.getTime() - a.createdAt.getTime();
+		})
+	);
 
-  public pushTask(task: Task, tagId?: string) {
-    const tag = this._tagState.value?.find((tag) => tag.id === tagId);
+	constructor(private _taskService: TaskService) {
+		super({
+			initialState: [],
+			source$: _taskService.readAll().pipe(first()),
+			sourceActions: {
+				add: (state, action$) => this._onAdd(state, action$),
+				edit: (state, action$) => this._onEdit(state, action$),
+				delete: (state, action$) => this._onDelete(state, action$),
+			},
+		});
+	}
 
-    const value = (this.value ?? [])
-      .slice()
-      .filter((t) => t.id !== task?.id)
-      .concat({ ...task, tag });
+	private _handleError = (state: StateManagerData<Task[]>, err: any) =>
+		of({
+			...state,
+			error: err,
+			loaded: true,
+		});
 
-    this.setValue(value);
-  }
+	private _onAdd = (
+		state: StateManagerData<Task[]>,
+		action$: Observable<WriteTask>
+	) =>
+		action$.pipe(
+			switchMap((task) => this._taskService.create(task)),
+			map((task) => ({
+				error: null,
+				loaded: true,
+				value: [...state.value, task],
+			})),
+			catchError((err) => this._handleError(err, state))
+		);
 
-  public refresh(params?: { [key: string]: any }) {
-    this._taskService
-      .readAll()
-      .pipe(first())
-      .subscribe((res) => this.setValue(res));
-  }
+	private _onEdit = (
+		state: StateManagerData<Task[]>,
+		action$: Observable<WriteTask>
+	) =>
+		action$.pipe(
+			switchMap((task) => this._taskService.update(task.id!, task)),
+			map((task) => ({
+				error: null,
+				loaded: true,
+				value: [...state.value.filter((t) => t.id !== task.id), task],
+			})),
+			catchError((err) => this._handleError(err, state))
+		);
 
-  public updateTask(task: WriteTaskRequest) {
-    if (!task.id) return of(false);
-    return this._taskService.update(task.id, task).pipe(
-      first(),
-      catchError((_) => of(false)),
-      map((res) => {
-        if (typeof res !== 'boolean') this.pushTask(res, task.tagId);
-        return !!res;
-      })
-    );
-  }
+	private _onDelete = (
+		state: StateManagerData<Task[]>,
+		action$: Observable<string>
+	) =>
+		action$.pipe(
+			switchMap((id) => this._taskService.delete(id)),
+			map((task) => ({
+				error: null,
+				loaded: true,
+				value: state.value.filter((t) => t.id !== task.id),
+			})),
+			catchError((err) => this._handleError(err, state))
+		);
 
-  public createTask(task: WriteTaskRequest) {
-    return this._taskService.create(task).pipe(
-      first(),
-      catchError((_) => of(false)),
-      map((res) => {
-        if (typeof res !== 'boolean') this.pushTask(res, task.tagId);
-        return !!res;
-      })
-    );
-  }
+	addTask(task: WriteTask) {
+		this.actionsSub['add'].next(task);
+		return this.getActionNotification('add');
+	}
+
+	editTask(task: WriteTask) {
+		this.actionsSub['edit'].next(task);
+		return this.getActionNotification('edit');
+	}
+
+	deleteTask(id: string) {
+		this.actionsSub['delete'].next(id);
+		return this.getActionNotification('delete');
+	}
 }

@@ -1,0 +1,42 @@
+<span matDialogTitle>{{ form.get('id')?.value ? 'Edit' : 'Add' }} Tag</span>
+
+<form matDialogContent [formGroup]="form" (ngSubmit)="onSubmit()">
+	<mat-form-field appearance="outline" color="accent" class="title">
+		<mat-label>Title</mat-label>
+		<input matInput formControlName="title" />
+		<mat-error>Title is required</mat-error>
+	</mat-form-field>
+
+	<mat-form-field appearance="outline" color="accent" class="deadline">
+		<mat-label>Deadline</mat-label>
+		<input matInput [matDatepicker]="picker" formControlName="deadline" />
+		<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+		<mat-datepicker #picker></mat-datepicker>
+	</mat-form-field>
+
+	<mat-form-field appearance="outline" color="accent" class="tag">
+		<mat-label>Tag</mat-label>
+		<mat-select formControlName="tagId">
+			@for (tag of tags(); track tag.id) {
+			<mat-option [value]="tag.id">{{ tag.name }}</mat-option>
+			}
+		</mat-select>
+	</mat-form-field>
+
+	<mat-form-field appearance="outline" color="accent" class="description">
+		<mat-label>Description</mat-label>
+		<textarea matInput formControlName="description"></textarea>
+	</mat-form-field>
+
+	<div class="actions">
+		<button matDialogClose type="button" mat-stroked-button>Cancel</button>
+		<button
+			mat-flat-button
+			type="submit"
+			color="primary"
+			[disabled]="form.invalid"
+		>
+			Submit
+		</button>
+	</div>
+</form>

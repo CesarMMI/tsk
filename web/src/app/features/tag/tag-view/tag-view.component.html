@@ -1,0 +1,8 @@
+@if (tag(); as tag) {
+<div class="header">
+	<span class="header-title">{{tag.name}}</span>
+	<span class="flex-spacer"></span>
+</div>
+
+<tsk-task-list [tasks]="tag.tasks" />
+}

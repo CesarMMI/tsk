@@ -1,0 +1,31 @@
+:host {
+	display: block;
+}
+
+.wrapper {
+	display: flex;
+	align-items: center;
+	gap: var(--padding-sm);
+}
+
+.chip {
+	height: 24px;
+	padding: 0 8px;
+	border-radius: 12px;
+
+	display: flex;
+	align-items: center;
+
+	font-size: 12px;
+	color: var(--color-text-dk);
+	background-color: var(--color-base-lt);
+  transition: color .2s ease-in-out, background-color .2s ease-in-out;
+
+	cursor: pointer;
+
+	&:hover,
+	&.active {
+		color: var(--color-text-lt);
+		background-color: var(--color-text-dk);
+	}
+}

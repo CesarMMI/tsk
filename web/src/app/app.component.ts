@@ -2,23 +2,26 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { slider } from './core/animations/route-animation';
-import { NavbarComponent } from './core/components/navbar/navbar.component';
+import { NavbarComponent } from './features/navbar/navbar.component';
 
 @Component({
-  selector: 'tsk-root',
-  standalone: true,
-  imports: [CommonModule, RouterModule, NavbarComponent],
-  template: `
-    <main>
-      <div class="sidenav">
-        <tsk-navbar></tsk-navbar>
-      </div>
-      <div [@routeAnimations]="prepareRoute(outlet)" class="content">
-        <router-outlet #outlet="outlet"></router-outlet>
-      </div>
-    </main>
-  `,
-  styles: `
+	selector: 'tsk-root',
+	standalone: true,
+	imports: [CommonModule, RouterModule, NavbarComponent],
+	template: `
+		<main>
+			<div class="sidenav">
+				<tsk-navbar></tsk-navbar>
+			</div>
+			<div
+				[@routeAnimations]="prepareRoute(outlet)"
+				class="content"
+			>
+				<router-outlet #outlet="outlet"></router-outlet>
+			</div>
+		</main>
+	`,
+	styles: `
     main {
       width: 100vw;
       height: 100vh;
@@ -29,7 +32,7 @@ import { NavbarComponent } from './core/components/navbar/navbar.component';
     }
 
     .sidenav {
-      width: min(20%, 300px);
+		width: min(20%, 300px);
     }
 
     .content {
@@ -39,14 +42,12 @@ import { NavbarComponent } from './core/components/navbar/navbar.component';
       width: min(80%, 960px);
     }
   `,
-  animations: [slider],
+	animations: [slider],
 })
 export class AppComponent {
-  prepareRoute(outlet: RouterOutlet) {
-    return (
-      outlet &&
-      outlet.activatedRouteData &&
-      outlet.activatedRouteData['animation']
-    );
-  }
+	prepareRoute(outlet: RouterOutlet) {
+		return (
+			outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation']
+		);
+	}
 }

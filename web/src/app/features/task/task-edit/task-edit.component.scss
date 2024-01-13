@@ -1,0 +1,32 @@
+:host {
+	display: block;
+}
+
+form {
+	gap: 12px;
+	margin-top: 12px;
+
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	overflow: visible;
+
+	.title,
+	.description,
+	.actions {
+		grid-column: span 2;
+	}
+
+	.actions {
+		margin-top: 12px;
+		text-align: right;
+
+		.mdc-button {
+			&:first-child {
+				border-radius: 4px 0 0 4px;
+			}
+			&:last-child {
+				border-radius: 0 4px 4px 0;
+			}
+		}
+	}
+}
