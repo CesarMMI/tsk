@@ -62,7 +62,7 @@ export class TaskService {
 		);
 
 		if (result.affected < 1) throw new ServerError(500, 'internal server error');
-		return { ...task, ...dto };
+		return { ...task, ...dto, tag };
 	}
 
 	async remove(id: string) {
@@ -71,6 +71,6 @@ export class TaskService {
 		const result = await this.taskRepository.delete({ id: task.id });
 
 		if (result.affected < 1) throw new ServerError(500, 'internal server error');
-		else return 'OK';
+		else return task;
 	}
 }

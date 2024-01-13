@@ -54,6 +54,6 @@ export class TagService {
 		const result = await this.tagRepository.delete({ id: tag.id });
 
 		if (result.affected < 1) throw new ServerError(500, 'internal server error');
-		else return 'OK';
+		else return tag;
 	}
 }
