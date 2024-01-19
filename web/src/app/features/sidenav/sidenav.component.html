@@ -1,0 +1,32 @@
+<div class="header">
+  <span class="header-title">TSK</span>
+</div>
+
+<div class="list">
+  <div class="list-item" [routerLink]="['home']" routerLinkActive="active">
+    <tsk-icon>home</tsk-icon>
+    <span>Home</span>
+  </div>
+
+  <!-- @for (tag of tags(); track tag.id) {
+  <div
+    class="list-item"
+    [routerLink]="['tag', tag.id]"
+    routerLinkActive="active"
+  >
+    <tsk-icon [ngStyle]="{ color: tag.color }">circle</tsk-icon>
+    <span>{{ tag.name }}</span> -->
+
+  <!-- <div class="actions">
+      <tsk-icon (click)="$event.stopPropagation(); onEdit(tag)">edit</tsk-icon>
+      <tsk-icon (click)="$event.stopPropagation(); onDelete(tag.id)"
+        >delete</tsk-icon
+      >
+    </div> -->
+  <!-- </div> -->
+  <!-- } -->
+  <!-- <div class="list-item" (click)="onCreate()">
+    <tsk-icon>add</tsk-icon>
+    <span>Add tag</span>
+  </div> -->
+</div>

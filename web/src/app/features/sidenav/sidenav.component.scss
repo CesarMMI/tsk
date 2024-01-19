@@ -1,0 +1,24 @@
+.header {
+  padding: var(--size-md) var(--size-md) var(--size-lg);
+
+  &-title {
+    color: var(--color-text-100);
+  }
+}
+
+.list-item {
+  cursor: default;
+  padding: var(--size-md);
+
+  opacity: 0.5;
+  transition: opacity 0.2s ease-in-out;
+
+  &:not(&.active) {
+    cursor: pointer;
+  }
+
+  &:hover,
+  &.active {
+    opacity: 1;
+  }
+}

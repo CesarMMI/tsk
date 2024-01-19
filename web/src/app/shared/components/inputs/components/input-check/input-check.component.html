@@ -1,0 +1,6 @@
+<div
+  [ngClass]="{ check: true, disabled: disabled, active: value }"
+  (click)="value = !value; valueChange.emit(value)"
+>
+  <tsk-icon>check</tsk-icon>
+</div>

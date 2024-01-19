@@ -1,21 +1,25 @@
-@import "./assets/styles/material-theme";
-@import "./assets/styles/variables";
-
 /* You can add global styles to this file, and also import other style files */
+@import "normalize.css";
+@import "./assets/styles/variables.scss";
 
 html,
 body {
   height: 100%;
+  line-height: normal;
 }
+
 body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  
+  font-family: "Montserrat", sans-serif;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+
+  color: var(--color-text);
+  background-color: var(--color-base);
 }
 
 .flex-spacer {
   flex: 1 1 auto;
-}
-
-.mat-mdc-dialog-container .mdc-dialog__surface{
-  background-color: var(--color-base-lt) !important;
 }

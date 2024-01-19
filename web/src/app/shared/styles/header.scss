@@ -1,11 +1,11 @@
 .header {
-	display: flex;
-	align-items: center;
-	padding: var(--padding-md) var(--padding-md) var(--padding-lg);
+  display: flex;
+  align-items: center;
+  padding: var(--size-md) 0 var(--size-lg);
 }
 
 .header-title {
-	font-weight: 500;
-	font-size: var(--text-lg);
-	color: var(--color-text-md);
+  font-weight: 600;
+  font-size: var(--text-lg);
+  color: var(--color-text);
 }

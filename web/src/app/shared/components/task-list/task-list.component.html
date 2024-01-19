@@ -1,40 +1,39 @@
 <div class="list">
-	<!-- Tasks -->
-	@for (task of tasks; track task.id; let i = $index) {
-	<div [ngClass]="{ 'list-item': true, task: true, done: task.done }">
-		<!-- Done -->
-		<tsk-input-checkbox
-			[(value)]="task.done"
-			(valueChange)="checkClick.emit(task)"
-		/>
-		<!-- Title -->
-		<span class="task-title" (click)="taskClick.emit(task)">{{ task.title }}</span>
-		<!-- Description -->
-		<span class="task-description">{{ task.description }}</span>
+  <!-- Tasks -->
+  @for (task of tasks; track task.id; let i = $index) {
+  <div [ngClass]="{ 'list-item': true, task: true, done: task.done }">
+    <!-- Done -->
+    <tsk-input-check
+      [(value)]="task.done"
+      (valueChange)="checkClick.emit(task)"
+    />
+    <!-- Title -->
+    <span class="task-title" (click)="taskClick.emit(task)">{{
+      task.title
+    }}</span>
+    <!-- Description -->
+    <span class="task-description">{{ task.description }}</span>
 
-		<span class="flex-spacer"></span>
+    <span class="flex-spacer"></span>
 
-		<!-- Tag -->
-		@if (task.tag) {
-		<div
-			class="task-tag"
-			[ngStyle]="{ backgroundColor: task.tag.color }"
-		>
-			{{ task.tag.name }}
-		</div>
-		}
-		<!-- Deadline -->
-		@if (task.deadline) {
-		<span class="task-deadline">{{ task.deadline | date }}</span>
-		}
+    <!-- Deadline -->
+    @if (task.deadline) {
+    <span class="task-deadline">{{ task.deadline | date }}</span>
+    }
 
-		<mat-icon class="task-delete" (click)="deleteClick.emit(task)">delete</mat-icon>
-	</div>
-	}
-	@if (showAdd) {
-		<div class="list-item add" (click)="addClick.emit($event)">
-			<mat-icon class="add-icon">add</mat-icon>
-			<span class="add-label">Create Task</span>
-		</div>
-	}
+    <!-- Tag -->
+    @if (task.tag) {
+    <tsk-badge [text]="task.tag.name" [color]="task.tag.color" />
+    }
+
+    <tsk-icon class="task-delete" (click)="deleteClick.emit(task)"
+      >delete</tsk-icon
+    >
+  </div>
+  } @if (showAdd) {
+  <div class="list-item add" (click)="addClick.emit($event)">
+    <tsk-icon class="add-icon">add</tsk-icon>
+    <span class="add-label">Add Task</span>
+  </div>
+  }
 </div>

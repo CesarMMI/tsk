@@ -1,74 +1,59 @@
 .list-item {
-	&:not(&:last-child) {
-		height: 23px;
-		border-bottom: 1px solid var(--color-base-lt);
-	}
+  &:not(&:last-child) {
+    border-bottom: 1px solid var(--color-border);
+  }
 }
 
 .task {
-	&-title {
-		cursor: pointer;
-	}
-	&-description {
-		color: var(--color-text-dk);
-	}
+  &-title {
+    cursor: pointer;
+    font-weight: 600;
+  }
 
-	&-tag {
-		display: flex;
-		align-items: center;
+  &-description,
+  &-deadline {
+    font-size: var(--text-sm);
+    color: var(--color-text-200);
+  }
 
-		height: 24px;
-		border-radius: 12px;
+  &-delete {
+    cursor: pointer;
+    font-size: var(--text-sm);
 
-		font-size: 12px;
-		font-weight: 500;
+    color: transparent;
+    transition: color 0.2s ease-in-out;
+  }
 
-		color: var(--color-base-dk);
+  &:hover {
+    .task-delete {
+      color: var(--color-text-100);
+      &:hover {
+        color: var(--color-text-200);
+      }
+    }
+  }
 
-		font-size: var(--text-sm);
-		padding: 0 calc(var(--padding-sm) / 2);
-	}
-
-	&-deadline {
-		font-size: 12px;
-		color: var(--color-text-dk);
-	}
-
-	&-delete {
-		font-size: 18px;
-		width: 18px;
-		height: 18px;
-		color: transparent;
-		transition: color 0.2s ease-in-out;
-	}
-
-	&:hover {
-		.task-delete {
-			cursor: pointer;
-			color: var(--color-text-dk);
-			&:hover {
-				color: var(--color-text-lt);
-			}
-		}
-	}
-
-	&.done {
-		.task-title {
-			color: var(--color-text-dk);
-		}
-		.task-title,
-		.task-description {
-			text-decoration: line-through;
-		}
-	}
+  &.done {
+    .task-title {
+      color: var(--color-text-400);
+    }
+    .task-title,
+    .task-description {
+      text-decoration: line-through;
+    }
+  }
 }
 
 .add {
-	cursor: pointer;
-	color: var(--color-text-dk);
-	transition: color 0.2s ease-in-out;
+  cursor: pointer;
+  color: var(--color-text-200);
+  transition: color 0.2s ease-in-out;
 
-	&:hover {
-		color: var(--color-text-lt);
-	}
+  &-icon {
+    font-size: var(--text-sm);
+  }
+
+  &:hover {
+    color: var(--color-text-300);
+  }
 }

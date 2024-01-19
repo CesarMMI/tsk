@@ -1,13 +1,14 @@
 .list {
-	display: grid;
+  display: grid;
 }
 
 .list-item {
-	height: 24px;
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 
-	gap: var(--padding-md);
-	padding: var(--padding-md);
-	color: var(--color-text-lt);
+  gap: var(--size-sm);
+  padding: var(--size-md) 0;
+
+  font-size: 1em;
+  color: var(--color-text);
 }
