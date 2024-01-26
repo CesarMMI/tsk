@@ -1,3 +1,18 @@
-.header-title {
-	color: var(--color-text-100);
+// :host {
+//   display: block;
+// }
+
+// .tsk-header {
+//   margin-bottom: var(--padding-lg);
+// }
+
+// h3 {
+//   margin-top: 0;
+// }
+
+.grid {
+  gap: 1rem;
+  display: grid;
+  align-items: start;
+  justify-items: center;
 }

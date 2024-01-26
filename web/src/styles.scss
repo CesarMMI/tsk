@@ -1,25 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
-@import "normalize.css";
-@import "./assets/styles/variables.scss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-html,
-body {
-  height: 100%;
-  line-height: normal;
+* {
+	outline: none;
+	min-width: 0;
+	box-sizing: border-box;
 }
 
-body {
-  font-size: 18px;
-  font-weight: 500;
-  
-  font-family: "Montserrat", sans-serif;
-  -webkit-font-smoothing: auto;
-  -moz-osx-font-smoothing: auto;
-
-  color: var(--color-text);
-  background-color: var(--color-base);
-}
-
-.flex-spacer {
-  flex: 1 1 auto;
+html {
+	font-size: 18px;
 }

@@ -1,8 +1,8 @@
 import { Injectable, computed } from '@angular/core';
-import { Observable, catchError, first, map, of, switchMap } from 'rxjs';
+import { Observable, catchError, first, map, of, switchMap, tap } from 'rxjs';
 import { StateManager } from '../../../core/classes/state-manager';
-import { Tag } from '../../types/models/tag';
 import { StateManagerData } from '../../../core/types/state-manager-data';
+import { Tag } from '../../types/models/tag';
 import { TagService } from '../services/tag.service';
 
 @Injectable({
@@ -14,8 +14,8 @@ export class TagsState extends StateManager<Tag[]> {
 	readonly error = computed(() => this.state().error);
 	readonly tags = computed(() =>
 		this.state().value.sort(
-			(a, b) => b.createdAt.getTime() - a.createdAt.getTime()
-		)
+			(a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+		),
 	);
 
 	constructor(private _tagService: TagService) {
@@ -39,7 +39,7 @@ export class TagsState extends StateManager<Tag[]> {
 
 	private _onAdd = (
 		state: StateManagerData<Tag[]>,
-		action$: Observable<Partial<Tag>>
+		action$: Observable<Partial<Tag>>,
 	) =>
 		action$.pipe(
 			switchMap((tag) => this._tagService.create(tag)),
@@ -48,12 +48,12 @@ export class TagsState extends StateManager<Tag[]> {
 				loaded: true,
 				value: [...state.value, tag],
 			})),
-			catchError((err) => this._handleError(err, state))
+			catchError((err) => this._handleError(err, state)),
 		);
 
 	private _onEdit = (
 		state: StateManagerData<Tag[]>,
-		action$: Observable<Partial<Tag> & { id: string }>
+		action$: Observable<Partial<Tag> & { id: string }>,
 	) =>
 		action$.pipe(
 			switchMap((tag) => this._tagService.update(tag.id, tag)),
@@ -62,12 +62,12 @@ export class TagsState extends StateManager<Tag[]> {
 				loaded: true,
 				value: [...state.value.filter((t) => t.id !== tag.id), tag],
 			})),
-			catchError((err) => this._handleError(err, state))
+			catchError((err) => this._handleError(err, state)),
 		);
 
 	private _onDelete = (
 		state: StateManagerData<Tag[]>,
-		action$: Observable<string>
+		action$: Observable<string>,
 	) =>
 		action$.pipe(
 			switchMap((id) => this._tagService.delete(id)),
@@ -76,12 +76,12 @@ export class TagsState extends StateManager<Tag[]> {
 				loaded: true,
 				value: state.value.filter((t) => t.id !== tag.id),
 			})),
-			catchError((err) => this._handleError(err, state))
+			catchError((err) => this._handleError(err, state)),
 		);
 
 	addTag(tag: Partial<Tag>) {
 		this.actionsSub['add'].next(tag);
-		return this.getActionNotification('add');
+		return this.getActionNotification('add').pipe(tap(console.log));
 	}
 
 	editTag(tag: Partial<Tag> & { id: string }) {

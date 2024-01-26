@@ -1,0 +1,71 @@
+<input
+	#checkboxFocus
+	type="checkbox"
+	[ngModel]="opened()"
+	(ngModelChange)="onOpenedChange($event)"
+	(focusin)="onFocus(true)"
+	(focusout)="onFocus(false)"
+/>
+
+<div
+	#selectContainer
+	[ngClass]="{
+		'border-neutral-700': focused(),
+		'border-neutral-800': !focused()
+	}"
+	class="flex w-full items-center rounded border bg-neutral-950 py-1 text-neutral-50"
+>
+	<span class="text-lg">{{ currLabel() }}</span>
+
+	<span class="flex-1"></span>
+
+	@if (opened()) {
+		<tsk-icon class="px-2 text-lg">expand_more</tsk-icon>
+	} @else {
+		<tsk-icon class="px-2 text-lg">expand_less</tsk-icon>
+	}
+</div>
+
+@if (opened()) {
+	<div
+		class="top-100 fixed z-10 mt-1 rounded border border-neutral-800 bg-neutral-950"
+		[ngStyle]="{ width: selectContainer.offsetWidth + 'px' }"
+	>
+		<ul class="list-none">
+			@for (option of options; track $index) {
+				<li>
+					<input
+						type="radio"
+						name="options"
+						class="hidden"
+						[checked]="value === option[valueProp]"
+						[ngModel]="currValue()"
+						(ngModelChange)="onValueChange($event)"
+						[id]="option[valueProp] + '-' + $index"
+						[value]="option[valueProp]"
+					/>
+					<label
+						class="block w-full cursor-pointer"
+						[for]="option[valueProp] + '-' + $index"
+					>
+						@if (customOption) {
+							<ng-container
+								*ngTemplateOutlet="
+									customOption.templateRef;
+									context: { $implicit: option }
+								"
+							></ng-container>
+						} @else {
+							<span
+								class="block w-full p-2 hover:bg-neutral-900"
+								[ngClass]="{ 'bg-neutral-900': value === option[valueProp] }"
+							>
+								{{ option[labelProp] }}
+							</span>
+						}
+					</label>
+				</li>
+			}
+		</ul>
+	</div>
+}

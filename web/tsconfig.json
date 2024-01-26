@@ -19,14 +19,6 @@
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
-    "paths": {
-      "tsk-web-components": [
-        "./dist/tsk-web-components"
-      ],
-      "tsk-web-library": [
-        "./dist/tsk-web-library"
-      ]
-    },
     "lib": [
       "ES2022",
       "dom"

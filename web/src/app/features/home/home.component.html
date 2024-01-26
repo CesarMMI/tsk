@@ -1,18 +1,5 @@
-<div class="header">
-  <span class="header-title">Home</span>
-  <span class="flex-spacer"></span>
+<tsk-header [title]="'Home'" />
+
+<div class="border border-neutral-800 bg-neutral-900 rounded">
+	<tsk-tasks-list [tasks]="tasks()" (add)="onAdd()" />
 </div>
-
-<tsk-task-list
-  [tasks]="tasks()"
-  (addClick)="onEdit()"
-  (checkClick)="onCheck($event)"
-  (deleteClick)="onDelete($event.id)"
-  (taskClick)="onEdit($event)"
-/>
-
-@if (isEditing) {
-<tsk-task-edit></tsk-task-edit>
-}
-
-<tsk-calendar/>

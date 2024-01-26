@@ -8,7 +8,6 @@ export const routes: Routes = [
   },
   {
     path: 'home',
-    data: { animation: 'isLeft' },
     loadComponent: () =>
       import('./features/home/home.component').then((c) => c.HomeComponent),
   },
