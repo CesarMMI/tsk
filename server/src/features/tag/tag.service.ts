@@ -14,8 +14,7 @@ export class TagService {
 
 	async create(dto: CreateTagDto) {
 		const tag = await this.tagRepository.save({
-			name: dto.name,
-			color: dto.color,
+			title: dto.title,
 		});
 
 		if (!tag) throw new ServerError(500, 'internal server error');
@@ -39,8 +38,7 @@ export class TagService {
 		const result = await this.tagRepository.update(
 			{ id: tag.id },
 			{
-				name: dto.name ?? tag.name,
-				color: dto.color ?? tag.color,
+				title: dto.title ?? tag.title,
 			}
 		);
 

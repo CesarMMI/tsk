@@ -7,4 +7,21 @@ export abstract class DateUtils {
 		});
 		return target;
 	}
+
+	static compareDatesString(a?: string, b?: string) {
+		if (!a && !b) return 0;
+		if (a && !b) return -1;
+		if (!a && b) return 1;
+
+		return new Date(a!).getTime() - new Date(b!).getTime();
+	}
+
+	static compareDatesWoutTime(a?: Date, b?: Date) {
+		if (!a || !b) return false;
+
+		return (
+			new Date(a.getUTCFullYear(), a.getUTCMonth(), a.getUTCDate()).getTime() ===
+			new Date(b.getUTCFullYear(), b.getUTCMonth(), b.getUTCDate()).getTime()
+		);
+	}
 }

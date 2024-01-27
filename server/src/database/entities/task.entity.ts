@@ -2,11 +2,9 @@ import {
 	Column,
 	CreateDateColumn,
 	Entity,
-	JoinTable,
-	ManyToMany,
 	ManyToOne,
 	PrimaryGeneratedColumn,
-	UpdateDateColumn,
+	UpdateDateColumn
 } from 'typeorm';
 import { Tag } from './tag.entity';
 

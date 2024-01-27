@@ -1,22 +1,20 @@
-import { Directive } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 
-@Directive()
 export class ControlValueAccessorBase<T> implements ControlValueAccessor {
-	value?: T;
+	value: T | null = null;
 	touched: boolean = false;
 	disabled: boolean = false;
 
-	onChange = (val: T) => {};
+	onChange = (val: T | null) => {};
 	onTouched = () => {};
 
-	onInput(val: T) {
+	onInput(val: T | null) {
 		this.markAsTouched();
 		this.value = val;
 		this.onChange(this.value);
 	}
 
-	writeValue(val: T) {
+	writeValue(val: T | null) {
 		this.value = val;
 	}
 

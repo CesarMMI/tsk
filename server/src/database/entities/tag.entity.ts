@@ -14,10 +14,7 @@ export class Tag {
 	id: string;
 
 	@Column()
-	name: string;
-
-	@Column()
-	color: string;
+	title: string;
 
 	@CreateDateColumn({ name: 'created_at' })
 	createdAt: Date;
