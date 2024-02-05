@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { Tag } from 'src/database/entities/tag.entity';
 import { ServerError } from 'src/shared/classes/server-error.class';
 import { Repository } from 'typeorm';
@@ -12,6 +12,7 @@ export class TaskService {
 	constructor(
 		@Inject('TASK_REPOSITORY')
 		private taskRepository: Repository<Task>,
+		@Inject(forwardRef(() => TagService))
 		private tagService: TagService
 	) {}
 

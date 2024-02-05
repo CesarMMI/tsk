@@ -9,8 +9,9 @@ import {
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { map, startWith } from 'rxjs';
-import { FocusTrapDirective } from '../../directives/focus-trap.directive';
-import { Task } from '../../types/models/task';
+import { FocusTrapDirective } from '../../../../shared/directives/focus-trap.directive';
+import { Tag } from '../../../../shared/types/models/tag';
+import { Task } from '../../../../shared/types/models/task';
 import { DeadlineSelectComponent } from '../deadline-select/deadline-select.component';
 import { TagSelectComponent } from '../tag-select/tag-select.component';
 
@@ -30,7 +31,7 @@ import { TagSelectComponent } from '../tag-select/tag-select.component';
 			<input
 				tskFocusTrap
 				type="text"
-				class="bg-neutral-900 p-2 font-bold placeholder:text-neutral-500"
+				class="bg-neutral-950 p-2 font-bold placeholder:text-neutral-500"
 				placeholder="New task..."
 				formControlName="title"
 			/>
@@ -38,7 +39,7 @@ import { TagSelectComponent } from '../tag-select/tag-select.component';
 				<!-- Description -->
 				<textarea
 					cols="1"
-					class="bg-neutral-900 p-2 placeholder:text-neutral-500"
+					class="bg-neutral-950 p-2 placeholder:text-neutral-500"
 					placeholder="Description"
 					formControlName="description"
 				></textarea>
@@ -48,11 +49,12 @@ import { TagSelectComponent } from '../tag-select/tag-select.component';
 					<tsk-deadline-select formControlName="deadline" />
 					<!-- Tag -->
 					<tsk-tag-select formControlName="tagId" />
+
 					<span class="flex-1"></span>
 					<!-- Submit -->
 					<button
 						type="submit"
-						class="rounded bg-neutral-900 px-2 py-1 transition-colors hover:bg-neutral-800"
+						class="rounded bg-transparent px-2 py-1 transition-colors hover:bg-neutral-800"
 					>
 						Submit
 					</button>
@@ -62,8 +64,10 @@ import { TagSelectComponent } from '../tag-select/tag-select.component';
 	`,
 })
 export class TaskFormComponent {
-	@Output() submitEvent = new EventEmitter<Partial<Task>>();
-	@Input() set task(task: Partial<Task>) {
+	private _formBuilder = inject(FormBuilder);
+
+	@Input()
+	public set task(task: Partial<Task>) {
 		if (task.id)
 			this.form.setValue({
 				id: task.id,
@@ -75,9 +79,13 @@ export class TaskFormComponent {
 		else this.form.reset();
 	}
 
-	private _formBuilder = inject(FormBuilder);
+	@Input() tags: Tag[] = [];
 
-	date = new Date().toISOString();
+	@Output()
+	public submitEvent = new EventEmitter<Partial<Task>>();
+
+	@Output()
+	public addTag = new EventEmitter<string>();
 
 	public form = this._formBuilder.group({
 		id: [''],
@@ -111,7 +119,7 @@ export class TaskFormComponent {
 			deadline: this.form.value.deadline ?? undefined,
 			tagId: this.form.value.tagId ?? undefined,
 		};
-		if (!task) return;
+		if (!task || !task.title) return;
 		this.submitEvent.emit(task);
 	}
 }

@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Tag } from 'src/database/entities/tag.entity';
+import { ServerError } from 'src/shared/classes/server-error.class';
 import { Repository } from 'typeorm';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
-import { ServerError } from 'src/shared/classes/server-error.class';
 
 @Injectable()
 export class TagService {
@@ -48,6 +48,15 @@ export class TagService {
 
 	async remove(id: string) {
 		const tag = await this.findOne(id);
+
+		// const tasks = await this.taskService.findAll(tag.id);
+
+		// for (const task of tasks) {
+		// 	await this.taskService.update(tag.id, {
+		// 		...task,
+		// 		tagId: null,
+		// 	});
+		// }
 
 		const result = await this.tagRepository.delete({ id: tag.id });
 

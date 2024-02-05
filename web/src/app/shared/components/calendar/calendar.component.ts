@@ -16,23 +16,23 @@ import { DateUtils } from '../../utils/date.utils';
 	selector: 'tsk-calendar',
 	template: `
 		<div>
-			<header class="flex items-center p-2 gap-2">
+			<header class="flex items-center gap-2 p-2">
 				<!-- Curr month/year -->
 				<span class="text-xl">{{ currDate() | date: 'MMMM YYYY' }}</span>
 				<span class="flex-1"></span>
 				<!-- Prev month -->
 				<div
 					tskIcon
-					class="block aspect-square cursor-pointer rounded-full text-center text-sm leading-4 hover:bg-neutral-700"
-					(clickEvent)="onMonthChange(-1)"
+					class="block aspect-square cursor-pointer rounded-full text-center text-sm leading-4 hover:bg-neutral-800"
+					(click)="onMonthChange(-1)"
 				>
 					chevron_left
 				</div>
 				<!-- Next month -->
 				<div
 					tskIcon
-					class="block aspect-square cursor-pointer rounded-full text-center text-sm leading-4 hover:bg-neutral-700"
-					(clickEvent)="onMonthChange(1)"
+					class="block aspect-square cursor-pointer rounded-full text-center text-sm leading-4 hover:bg-neutral-800"
+					(click)="onMonthChange(1)"
 				>
 					chevron_right
 				</div>
@@ -178,6 +178,7 @@ export class CalendarComponent {
 				)
 			)
 				return date;
+
 			return { ...date, classes: [...date.classes, 'bg-neutral-700'] };
 		}),
 	);

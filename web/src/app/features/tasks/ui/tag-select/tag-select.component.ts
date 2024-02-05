@@ -1,19 +1,13 @@
 import { OverlayModule } from '@angular/cdk/overlay';
-import {
-	Component,
-	HostListener,
-	TemplateRef,
-	ViewChild,
-	inject,
-} from '@angular/core';
-import { IconDirective } from '../../directives/icon.directive';
-import { ControlValueAccessorBase } from '../../utils/control-value-accessor/control-value-accessor-base';
-import { controlValueAccessorFactory } from '../../utils/control-value-accessor/control-value-accessor-factory';
-import { TagsState } from '../../data-access/states/tag.state';
-import { TagsListComponent } from '../tags-list/tags-list.component';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { FocusTrapDirective } from '../../directives/focus-trap.directive';
-import { first } from 'rxjs';
+import { TagsState } from '../../../../shared/data-access/states/tag.state';
+import { FocusTrapDirective } from '../../../../shared/directives/focus-trap.directive';
+import { IconDirective } from '../../../../shared/directives/icon.directive';
+import { Tag } from '../../../../shared/types/models/tag';
+import { ControlValueAccessorBase } from '../../../../shared/utils/control-value-accessor/control-value-accessor-base';
+import { controlValueAccessorFactory } from '../../../../shared/utils/control-value-accessor/control-value-accessor-factory';
+import { TagsListComponent } from '../tags-list/tags-list.component';
 
 @Component({
 	standalone: true,
@@ -46,15 +40,18 @@ import { first } from 'rxjs';
 			(overlayOutsideClick)="opened = false"
 		>
 			<div
-				class="rounded border border-neutral-700 bg-neutral-800 text-neutral-50 drop-shadow"
+				class="rounded border border-neutral-800 bg-neutral-900 text-neutral-50"
 			>
 				<tsk-tags-list
 					[tags]="tags()"
-					(selectedChange)="onInput($event.id); opened = false"
+					[selectedId]="value"
+					(selectedChange)="onInput($event?.id ?? null); opened = false"
+					(editEvent)="onEdit($event)"
+					(deleteEvent)="onDelete($event.id)"
 				/>
 				@if (!editing) {
 					<div
-						class="flex cursor-pointer items-center gap-1 rounded px-2 py-1 pr-3 text-center text-sm text-neutral-500 hover:bg-neutral-700"
+						class="flex cursor-pointer items-center gap-1 rounded-b px-2 py-1 pr-3 text-center text-sm text-neutral-500 hover:bg-neutral-800"
 						(click)="editing = true"
 					>
 						<span class="text-sm" tskIcon>add</span>
@@ -66,7 +63,7 @@ import { first } from 'rxjs';
 							tskFocusTrap
 							type="text"
 							placeholder="Title"
-							class="bg-neutral-800 px-2 pb-1 placeholder:text-neutral-500"
+							class="bg-neutral-900 px-2 pb-1 placeholder:text-neutral-500"
 							formControlName="title"
 						/>
 					</form>
@@ -84,6 +81,7 @@ export class TagSelectComponent extends ControlValueAccessorBase<string> {
 
 	public tags = this._tagsState.tags;
 	public form = this._formBuilder.group({
+		id: [''],
 		title: ['', Validators.required],
 	});
 
@@ -91,17 +89,28 @@ export class TagSelectComponent extends ControlValueAccessorBase<string> {
 		return this.tags().find((tag) => tag.id === this.value)?.title;
 	}
 
+	public onEdit(tag: Tag) {
+		this.form.setValue({
+			id: tag.id,
+			title: tag.title,
+		});
+		this.editing = true;
+	}
+
+	public onDelete(id: string) {
+		if (id === this.value) this.onInput(null);
+		this._tagsState.deleteTag(id);
+	}
+
 	public onSubmit() {
 		if (this.form.invalid) return;
+		const action = this.form.value.id ? 'editTag' : 'addTag';
 
-		this._tagsState
-			.addTag({ title: this.form.value.title! })
-			.pipe(first())
-			.subscribe((res) => {
-				if (!res.error && res.loaded) {
-					this.form.reset();
-					this.editing = false;
-				}
-			});
+		this._tagsState[action]({
+			id: this.form.value.id!,
+			title: this.form.value.title ?? undefined,
+		});
+		this.form.reset();
+		this.editing = false;
 	}
 }

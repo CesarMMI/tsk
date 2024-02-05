@@ -1,10 +1,10 @@
 import { OverlayModule } from '@angular/cdk/overlay';
 import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
-import { IconDirective } from '../../directives/icon.directive';
-import { controlValueAccessorFactory } from '../../utils/control-value-accessor/control-value-accessor-factory';
-import { CalendarComponent } from '../calendar/calendar.component';
-import { ControlValueAccessorBase } from './../../utils/control-value-accessor/control-value-accessor-base';
+import { CalendarComponent } from '../../../../shared/components/calendar/calendar.component';
+import { IconDirective } from '../../../../shared/directives/icon.directive';
+import { ControlValueAccessorBase } from '../../../../shared/utils/control-value-accessor/control-value-accessor-base';
+import { controlValueAccessorFactory } from '../../../../shared/utils/control-value-accessor/control-value-accessor-factory';
 
 @Component({
 	standalone: true,
@@ -31,7 +31,7 @@ import { ControlValueAccessorBase } from './../../utils/control-value-accessor/c
 			(overlayOutsideClick)="opened = false"
 		>
 			<div
-				class="rounded border border-neutral-700 bg-neutral-800 text-neutral-50 drop-shadow"
+				class="rounded border border-neutral-800 bg-neutral-900 text-neutral-50"
 			>
 				<tsk-calendar
 					[date]="value"

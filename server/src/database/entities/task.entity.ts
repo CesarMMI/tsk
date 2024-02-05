@@ -4,7 +4,7 @@ import {
 	Entity,
 	ManyToOne,
 	PrimaryGeneratedColumn,
-	UpdateDateColumn
+	UpdateDateColumn,
 } from 'typeorm';
 import { Tag } from './tag.entity';
 
@@ -34,6 +34,10 @@ export class Task {
 	@UpdateDateColumn({ name: 'updated_at' })
 	updatedAt: Date;
 
-	@ManyToOne(() => Tag, (tag) => tag.tasks, { nullable: true, eager: true })
+	@ManyToOne(() => Tag, (tag) => tag.tasks, {
+		eager: true,
+		nullable: true,
+		onDelete: 'SET NULL',
+	})
 	tag?: Tag;
 }
